@@ -30,6 +30,7 @@ filetype indent on
 " folding
 let perl_fold=1
 let perl_extended_vars = 1
+set foldlevelstart=99
 
 set laststatus=2
 
@@ -65,6 +66,8 @@ let NERDTreeShowBookmarks=1
 let NERDTreeChDirMode=2
 let NERDTreeWinSize=35
 let NERDTreeIgnore=['CVS']
+"VSTreeExplore normal mode Ctrl-F
+nmap <C-f> <ESC>:NERDTreeToggle<Enter>
 
 let mojo_highlight_data = 1
 
@@ -112,12 +115,12 @@ set statusline+=%y      "filetype
 set statusline+=%r      "read only flag
 set statusline+=%m      "modified flag
 
-set list
-set listchars=tab:.\ ,trail:.,extends:#,nbsp:.
+set nolist
+"set listchars=tab:.\ ,trail:.,extends:#,nbsp:.
 
 " font
 if has("gui_gnome")
-	set guifont=Monospace\ 8
+	set guifont=DejaVu\ Sans\ Mono\ 14
 	set list
 	set listchars=tab:▸\ ,eol:¬,extends:#,nbsp:.,trail:.
 
@@ -129,7 +132,7 @@ elseif has("gui_macvim")
 endif
 
 if &t_Co >= 256 || has("gui_running")
-	set guifont=Monaco:h12
+	set guifont=DejaVu\ Sans\ Mono\ 14
 	colorscheme kraihlight
 	set guioptions-=r
 	set go-=L
@@ -141,7 +144,7 @@ endif
 " line tracking
 set numberwidth=5
 set cursorline
-set cursorcolumn
+"set cursorcolumn
 
 " turn off cursor blinking
 set guicursor+=a:blinkon0
@@ -156,7 +159,7 @@ function! StatuslineCurrentHighlight()
 endfunction
 
 " shortcuts
-inoremap jj <Esc>
+"inoremap jj <Esc>
 
 nnoremap ; :
 
@@ -200,8 +203,8 @@ nmap + <c-w>+
 nmap _ <c-w>-
 
 " Resize horizontal windows
-nmap > <c-w>>
-nmap < <c-w><
+nmap <mapleader>> <c-w>>
+nmap <mapleader>< <c-w><
 
 " Move multiple lines up-down
 vmap <c-up> xkP`[V`]
@@ -210,7 +213,7 @@ vmap <c-down> xp`[V`]
 "vmap <c-down> ]egv
 
 "Insert on empty line, with lines above and below (for mojocasts)
-nmap oo o<Esc>O
+"nmap oo o<Esc>O
 
 " autocompletion
 imap <Leader><Tab> <C-X><C-O>
@@ -282,6 +285,15 @@ let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 
 " who put this in?
 au! Syntax newlang source $VIM/syntax/nt.vim
+" Tag list
+let Tlist_Use_SingleClick = 1
+let Tlist_Use_Right_Window = 1
+let Tlist_Show_Menu = 1
+"let Tlist_Sort_Type = 'name'
+let Tlist_Compact_Format = 1
+let Tlist_File_Fold_Auto_Close = 1
+let Tlist_WinWidth = 50
+nmap <C-a> <ESC>:TlistToggle<Enter>
 
 " Show syntax highlighting groups for word under cursor
 nmap <C-S-P> :call <SID>SynStack()<CR>
@@ -334,7 +346,7 @@ endfunction
 
 function! ScreencastPrep()
   " disable blinking cursor
-  set guicursor+=n:hor10-blinkon0 
+  set guicursor+=n:hor10-blinkon0
   " disable autocomplete
   AcpDisable
   " disable colorcolumn
