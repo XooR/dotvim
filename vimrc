@@ -115,8 +115,7 @@ set statusline+=%y      "filetype
 set statusline+=%r      "read only flag
 set statusline+=%m      "modified flag
 
-set nolist
-"set listchars=tab:.\ ,trail:.,extends:#,nbsp:.
+set listchars=tab:.\ ,trail:.,extends:#,nbsp:.
 
 " font
 if has("gui_gnome")
@@ -134,12 +133,13 @@ endif
 if &t_Co >= 256 || has("gui_running")
 	set guifont=DejaVu\ Sans\ Mono\ 14
 	colorscheme kraihlight
-	set guioptions-=r
-	set go-=L
+"	set guioptions-=r
+"	set go-=L
 	set go-=T
 else
 	colorscheme ir_black
 endif
+set nolist
 
 " line tracking
 set numberwidth=5
