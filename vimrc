@@ -72,8 +72,6 @@ nmap <C-f> <ESC>:NERDTreeToggle<Enter>
 let mojo_highlight_data = 1
 
 set incsearch
-set ignorecase
-set smartcase
 set visualbell
 set noerrorbells
 set hlsearch
@@ -132,12 +130,12 @@ endif
 
 if &t_Co >= 256 || has("gui_running")
 	set guifont=DejaVu\ Sans\ Mono\ 14
-	colorscheme kraihlight
+	colorscheme  kraihlight
 "	set guioptions-=r
 "	set go-=L
 	set go-=T
 else
-	colorscheme ir_black
+"	colorscheme ir_black
 endif
 set nolist
 
@@ -356,3 +354,10 @@ function! ScreencastPrep()
   set ts=2
   set sw=2
 endfunction
+
+" COMMANDS
+imap <silent> <C-s> <ESC>:if &keymap =~ 'serbian' <Bar>
+                    \set keymap= <Bar>
+                \else <Bar>
+                    \set keymap=serbian <Bar>
+                \endif <Enter>a
