@@ -1,11 +1,3 @@
-" slimv options
-let g:slimv_keybindings=1
-let g:lisp_rainbow=1
-let g:slimv_leader=',s'
-
-" Gist options - put code in clipboard
-let g:gist_clip_command = 'pbcopy'
-
 " Use our user unless we have a sudo user, then is it
 let luser = substitute(system('whoami'), '\n', '', '')
 if strlen($SUDO_USER)
@@ -20,17 +12,15 @@ call pathogen#infect()
 set number
 set nocompatible
 
+" Stuff to ignore when doing TAB completion
 set wildignore+=*CVS
+" Gives menu on TAB completion
+set wildmenu
 
 " snipmate
 filetype on
 filetype plugin on
 filetype indent on
-
-" folding
-let perl_fold=1
-let perl_extended_vars = 1
-set foldlevelstart=99
 
 set laststatus=2
 
@@ -49,15 +39,15 @@ set textwidth=79
 set formatoptions=qrn1
 "if version >= 703
 if exists('+colorcolumn')
-	set colorcolumn=80
+  set colorcolumn=80
 endif
 
 " folding
 set foldmethod=indent
+set foldlevel=99
 
 " command-t search large trees
 let g:CommandTMaxFiles=20000
-let mojo_highlight_data = 1
 
 "
 " Sidebar folder navigation
@@ -68,8 +58,6 @@ let NERDTreeWinSize=35
 let NERDTreeIgnore=['CVS']
 "VSTreeExplore normal mode Ctrl-F
 nmap <C-f> <ESC>:NERDTreeToggle<Enter>
-
-let mojo_highlight_data = 1
 
 set incsearch
 set visualbell
@@ -116,28 +104,28 @@ set statusline+=%m      "modified flag
 set listchars=tab:.\ ,trail:.,extends:#,nbsp:.
 
 " font
-if has("gui_gnome")
-	set guifont=DejaVu\ Sans\ Mono\ 14
-	set list
-	set listchars=tab:▸\ ,eol:¬,extends:#,nbsp:.,trail:.
+if has("gui_gnome") || has("gui_gtk")
+  set guifont=DejaVu\ Sans\ Mono\ 14
+  set list
+  set listchars=tab:▸\ ,eol:¬,extends:#,nbsp:.,trail:.
 
 elseif has("gui_macvim")
-	"set guifont=Menlo:h12
-	set guifont=Monaco:h12
-	set list
-	set listchars=tab:▸\ ,eol:¬,extends:#,nbsp:.,trail:.
+  "set guifont=Menlo:h12
+  set guifont=Monaco:h11
+  set list
+  set listchars=tab:▸\ ,eol:¬,extends:#,nbsp:.,trail:.
 endif
 
 if &t_Co >= 256 || has("gui_running")
-	set guifont=DejaVu\ Sans\ Mono\ 14
-	colorscheme  kraihlight
+  set guifont=DejaVu\ Sans\ Mono\ 11
+  colorscheme jellybeans
 "	set guioptions-=r
 "	set go-=L
-	set go-=T
+  set go-=T
 else
 "	colorscheme ir_black
 endif
-set nolist
+"set nolist
 
 " line tracking
 set numberwidth=5
@@ -168,11 +156,7 @@ map <Leader>t :tabnew<cr>
 map <Leader>h :tabprevious<cr>
 map <Leader>l :tabnext<cr>
 map <Leader>w :tabclose<cr>
-map <Leader>pd :!perldoc %<cr>
-map <Leader>cs :colorscheme sri<cr>
-map <Leader>f :TlistToggle<cr>
-map <Leader>M :!morbo %<cr>
-map <Leader>x :!perl -Ilib %<cr>
+"map <Leader>cs :colorscheme sri<cr>
 map <leader><space> :CommandT<cr>
 map <leader>H :call HexHighlight()<cr>
 map <leader>tts :%s/\s\+$//<cr>
@@ -251,7 +235,7 @@ function! Prove ( verbose, taint )
 "        endif
         "execute !HARNESS_PERL_SWITCHES=-MDevel::Cover prove -" . s:params . " " . g:testfile
         execute "!prove --timer --normalize --state=save -" . s:params . " " . g:testfile
-		  "TEST_VERBOSE=1 prove -lvc --timer --normalize --state=save
+        "TEST_VERBOSE=1 prove -lvc --timer --normalize --state=save
     else
        call Compile ()
     endif
@@ -275,14 +259,9 @@ augroup END
 autocmd BufRead,BufNewFile *.t,*.pl,*.plx,*.pm command! -range=% -nargs=* Tidy <line1>,<line2>!perltidy -q
 autocmd BufRead,BufNewFile *.t,*.pl,*.plx,*.pm noremap <Leader>pt :Tidy<CR>
 
-" xmlfolding
-au BufNewFile,BufRead *.xml,*.htm,*.html so bundle/plugin/XMLFolding.vim
-
 " ack shortcut
-let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+let g:ackprg="ack -H --nocolor --nogroup --column"
 
-" who put this in?
-au! Syntax newlang source $VIM/syntax/nt.vim
 " Tag list
 let Tlist_Use_SingleClick = 1
 let Tlist_Use_Right_Window = 1
@@ -291,7 +270,8 @@ let Tlist_Show_Menu = 1
 let Tlist_Compact_Format = 1
 let Tlist_File_Fold_Auto_Close = 1
 let Tlist_WinWidth = 50
-nmap <C-a> <ESC>:TlistToggle<Enter>
+"nmap <C-a> <ESC>:TlistToggle<Enter>
+nmap <Leader>. :TlistToggle<cr>
 
 " Show syntax highlighting groups for word under cursor
 nmap <C-S-P> :call <SID>SynStack()<CR>
@@ -342,20 +322,14 @@ function! StatuslineCurrentHighlight()
     endif
 endfunction
 
-function! ScreencastPrep()
-  " disable blinking cursor
-  set guicursor+=n:hor10-blinkon0
-  " disable autocomplete
-  AcpDisable
-  " disable colorcolumn
-  set colorcolumn=0
-  "set guifont=Menlo:h14
-  set guifont=Monaco:h13
-  set ts=2
-  set sw=2
+" :call XilinxIgnore()
+" Set NERDTreeIgnore filter for xilinx files that are not vhd files
+function! XilinxIgnore()
+  let g:NERDTreeIgnore=['\~$', '\.prj$', '\.html$', '\.exe$', '\.cmd', '\.wcfg', '\.log', '\.[gx]ise$', '\.wdb', '\.ini', '\.xmsgs']
 endfunction
 
-" COMMANDS
+" i - C^s
+" SERBIAN KeyBoard
 imap <silent> <C-s> <ESC>:if &keymap =~ 'serbian' <Bar>
                     \set keymap= <Bar>
                 \else <Bar>
