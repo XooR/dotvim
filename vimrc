@@ -56,8 +56,6 @@ let NERDTreeShowBookmarks=1
 let NERDTreeChDirMode=2
 let NERDTreeWinSize=35
 let NERDTreeIgnore=['CVS']
-"VSTreeExplore normal mode Ctrl-F
-nmap <C-f> <ESC>:NERDTreeToggle<Enter>
 
 set incsearch
 set visualbell
