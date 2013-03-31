@@ -1,13 +1,6 @@
-" Use our user unless we have a sudo user, then is it
-let luser = substitute(system('whoami'), '\n', '', '')
-if strlen($SUDO_USER)
-    let luser = $SUDO_USER
-endif
-
 " pathogen
 call pathogen#infect()
-"silent! call pathogen#runtime_append_all_bundles()
-"silent! call pathogen#helptags()
+silent! call pathogen#helptags()
 
 set number
 set nocompatible
@@ -333,3 +326,7 @@ imap <silent> <C-s> <ESC>:if &keymap =~ 'serbian' <Bar>
                 \else <Bar>
                     \set keymap=serbian <Bar>
                 \endif <Enter>a
+
+"Kind Regards,
+"Stanislav Antic
+"System Engineer at Nordeus
